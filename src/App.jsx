@@ -1,8 +1,7 @@
-// App.jsx
 import React, { useState } from "react";
 import StudentCard from "./Studentcard";
-import { Box } from "@mui/material";
 import SearchBar from "./SearchBar";
+import "./App.css";
 
 const initialstudents = [
   { name: "Aman Sharma", roll: "CSE101", address: "Patna, Bihar", email: "aman.sharma@example.com" },
@@ -18,38 +17,51 @@ const initialstudents = [
 ];
 
 export default function App() {
-  const [students,setStudents]=useState(initialstudents);
-
+  const [students, setStudents] = useState(initialstudents);
   const [search, setSearch] = useState("");
-  const handleDelete =(roll) => {
-    setStudents(students.filter(s=>s.roll!==roll));
-  }
+
+  const handleDelete = (roll) => {
+    setStudents(students.filter((s) => s.roll !== roll));
+  };
 
   const filteredStudents = students.filter(
-    s =>
+    (s) =>
       s.name.toLowerCase().includes(search.toLowerCase()) ||
       s.roll.toLowerCase().includes(search.toLowerCase())
   );
-  return (
-    <Box>
-        <Box sx={{ p: 2, backgroundColor: "#f5f5f5" }}>
-            <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
-            <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
-        </Box>     
 
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
-            {filteredStudents.map((s) => (
+  return (
+    <>
+      <header>
+        <div className="container">
+          <div className="grid navbar-grid">
+            <div className="Logo">
+              <h1>Students</h1>
+            </div>
+
+            <ul className="navbar-menu">
+              <li>Home</li>
+              <li>About</li>
+              <li>Country</li>
+              <li>Contact</li>
+            </ul> 
+
+            <div className="ham-menu"></div>
+          </div>
+        </div>
+      </header>
+
+      {/* ✅ StudentCard rendering with your own CSS */}
+      <div className="student-list-wrapper">
+        <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
+
+        <ul className="student-list grid-four-cols">
+          {filteredStudents.map((s) => (
             <StudentCard key={s.roll} student={s} onDelete={() => handleDelete(s.roll)} />
-            ))}
-        </Box>
-        </Box>
-    </Box>
-    
-    
-    // <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", p: 2, gap: 2, backgroundColor: "#f5f5f5" }}>
-    //   {students.map((s, i) => (
-    //     <Studentcard key={i} student={s} onDelete={()=>handleDelete(s.roll)} />
-    //   ))}
-    // </Box>
+          ))}
+        </ul>
+
+      </div>
+    </>
   );
 }
